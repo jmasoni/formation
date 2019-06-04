@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form with ['bootstrap_4_layout.html.twig',_self] %}
+
+	{% block title %}Modification de l'annonce {% endblock %}
+
+		{% block body %}
+			<style>
+			.example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+			.example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+			</style>
+
+			<div class="container">
+
+				<h1>Modification de l'annonce: {{ad.title}}</h1>
+
+				{# templates/default/new.html.twig #}
+				{{ form_start(form) }}
+
+				{{ form_row(form.title, {'label':"Titre de l'annonce", 'attr':{'placeholder':"Titre de l'annonce",'title':"Titre avec un minimum de 10 et un maximum de 50 caractères."}}) }}
+				{{ form_row(form.slug,{'label':"URL Personnalisée"})}}
+				{{ form_row(form.price, {'label':"Prix", 'attr':{'placeholder':"Prix"}}) }}
+				{{ form_row(form.introduction, {'label':"Résumé", 'attr':{'placeholder':"Résumé"}}) }}
+				{{ form_row(form.content, {'label':"Annonce", 'attr':{'placeholder':"Annonce"}}) }}
+				{{ form_row(form.coverImage, {'label':"Image", 'attr':{'placeholder':"Image"}}) }}
+				{{ form_row(form.rooms, {'label':"Nombre de chambres", 'attr':{'placeholder':"Nombre de chambres"}}) }}
+				{{ form_row(form.images,{'label':false}) }}
+				<button type="button" class="btn btn-success" name="action" value="add" id="add_image"> Ajouter une image </button></br></br>
+				<button type="submit" class="btn btn-success" name="action" value="enregistrer"> Enregistrer l'annonce </button>
+
+				{{ form_end(form) }}
+
+			</div>
+
+		{% endblock %}
+
+
+
+		{% block _annonce_images_entry_row %}   
+			{#{{dump(form)}}#}
+
+			<div class="container">
+
+			<div class="row" id="{{id}}">
+
+				<div class="col">
+
+					{{ form_row(form.url, {'label':false, 'attr':{'placeholder':"URL image"}})}}
+
+				</div>
+
+				<div class="col">
+					{{ form_row(form.caption, {'label':false, 'attr':{'placeholder':"Légende image"}})}}
+				</div>
+
+				<div class="col-2">
+					<button type="button" class="btn btn-danger del_image" data-block="{{id}}"> X </button>
+				</div>
+				</div>
+				</div>
+
+
+			{% endblock %}
+
+			{% block javascripts %}
+				<script type="text/javascript">
+
+					// variable glocale qui compte le nbr d'entrees images existantes afin d'initialiser le compteur à n+1
+
+					var counter={{form.images | length}}
+
+
+					// $ est un alias jquery framework de javascript
+
+					$("#add_image").click(function(){
+
+						// au clic sur le bouton add_image je fais une action
+						//console.log(counter);
+						counter=counter+1;
+
+						// on recupere le prototype
+						var tmpl = $("#annonce_images").data("prototype");
+						// console.log(tmpl);
+						// on remplace _name_ récupéré par la valeur du counter
+						tmpl = tmpl.replace(/__name__/g,counter);
+						// console.log(tmpl);
+						//on ajoute le prototype modifié à la fin du div d'id annonce.images
+						$("#annonce_images").append(tmpl);
+
+						deleteBlock();
+
+					})
+
+
+					function deleteBlock(){
+						
+						$(".del_image").click(function(){
+
+							var bloc = $(this).data("block");
+							$("#"+bloc).remove();
+						})
+
+					}
+
+					deleteBlock();
+
+					</script>
+
+					{% endblock %}

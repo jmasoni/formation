@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form with ['bootstrap_4_layout.html.twig'] %}
+
+{% block title %}Réserver l'annonce {{ad.title}}{% endblock %}
+
+
+
+	{% block body %}
+	
+
+		<div class="container">
+
+			<h1>Réserver l'annonce {{ad.title}} </h1>
+
+			{# templates/default/new.html.twig #}
+			{{ form_start(form) }}
+
+			<div class="row">
+
+				<div class="col">
+
+					{{ form_row(form.startDate,{'label':"Date d'arrivée"})}}
+				</div>
+				<div class="col">
+					{{ form_row(form.endDate, {'label':"Date de départ"}) }}
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col">
+
+					{{ form_row(form.comment, {'label':"comment"}) }}
+
+				</div>
+
+			</div>
+
+			<button type="submit" class="btn btn-success" name="action" value="enregistrer"> Réserver </button>
+
+			{{ form_end(form) }}
+
+		</div>
+
+	{% endblock %}
+
+
+
